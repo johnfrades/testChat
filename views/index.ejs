@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome to Websocket CHAT!</title>
+
+	<style>
+		
+		#chat {
+			height: 500px;
+		}
+
+		#contentWrap {
+			
+		}
+	</style>
+</head>
+<body>
+<div id="nicknameWrap">
+	<p>Enter a username:</p>
+	<form id="setNick">
+		<input size="35" id="nickname">
+		<input type="submit">
+	</form>
+
+</div>
+
+
+
+<div id="contentWrap">
+<div id="chatWrap">
+<div id="chat"></div>
+<form id="send-message">
+	<input size="35" id="message">
+	<input type="submit">
+</form>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+<script   src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	jQuery(function($){
+		var socket = io.connect();
+		var $messageForm = $("#send-message");
+		var $messageBox = $("#message");
+		var $chat = $("#chat");
+
+		$messageForm.submit(function(e){
+			e.preventDefault();
+			socket.emit("send message", $messageBox.val());
+			$messageBox.val("");
+		});
+
+		socket.on('new message', function(data){
+			$chat.append(data + "<br/>");
+		});
+	});
+
+</script>
+</body>
+</html>
